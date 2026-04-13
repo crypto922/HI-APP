@@ -2,98 +2,120 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Love Generator 💖</title>
+
 <style>
-    body {
-        margin: 0;
-        font-family: Arial;
-        background: black;
-        color: white;
-        text-align: center;
-        overflow: hidden;
-    }
+body {
+    margin: 0;
+    font-family: Arial;
+    background: black;
+    color: white;
+    text-align: center;
+    overflow-x: hidden;
+}
 
-    h1 {
-        margin-top: 50px;
-        color: pink;
-    }
+h1 {
+    margin-top: 40px;
+    font-size: 32px;
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 3s infinite linear;
+}
 
-    input {
-        padding: 10px;
-        font-size: 18px;
-        border-radius: 10px;
-        border: none;
-        outline: none;
-    }
+@keyframes glow {
+    0% {filter: hue-rotate(0deg);}
+    100% {filter: hue-rotate(360deg);}
+}
 
-    button {
-        padding: 10px 20px;
-        font-size: 18px;
-        margin-left: 10px;
-        border: none;
-        border-radius: 10px;
-        background: red;
-        color: white;
-        cursor: pointer;
-    }
+input {
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    width: 200px;
+}
 
-    #message {
-        margin-top: 40px;
-        font-size: 22px;
-        line-height: 1.8;
-        min-height: 200px;
-        white-space: pre-line;
-    }
+button {
+    padding: 12px 18px;
+    font-size: 18px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background: red;
+    color: white;
+    cursor: pointer;
+}
 
-    .heart {
-        position: absolute;
-        color: red;
-        font-size: 20px;
-        animation: float 5s linear infinite;
-    }
+#message {
+    margin: 30px auto;
+    font-size: 20px;
+    max-width: 600px;
+    white-space: pre-line;
+    min-height: 200px;
+}
 
-    @keyframes float {
-        from { transform: translateY(100vh); opacity: 1; }
-        to { transform: translateY(-10vh); opacity: 0; }
-    }
+.heart {
+    position: absolute;
+    font-size: 20px;
+    color: red;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
 </style>
 </head>
+
 <body>
 
 <h1>💖 Love Generator 💖</h1>
 
-<input id="name" type="text" placeholder="Enter a name">
-<button onclick="generateLove()">Create Love</button>
+<input id="name" type="text" placeholder="Enter name">
+<button onclick="generate()">Create Love</button>
+<button onclick="share()">Share 💌</button>
 
 <div id="message"></div>
 
+<!-- 🎵 Music -->
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a3f6c1.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-function generateLove() {
+function generate() {
     let name = document.getElementById("name").value;
-    let msgBox = document.getElementById("message");
+    let msg = document.getElementById("message");
+    let music = document.getElementById("music");
+
+    music.play();
 
     let text = `
 My Dear ${name},
 
-From the moment I saw you,
-my world became brighter.
+From the first moment I saw you,
+my heart started beating differently 💖
 
-You are the smile I never want to lose,
-and the dream I always think about.
+You are my smile, my peace, my dream.
 
-I may not be perfect,
-but my feelings for you are real 💖
+No matter where life takes us,
+my feelings will always stay the same.
 
-I just want to say...
+I just want you to know...
 
 I LOVE YOU, ${name} 💕
 `;
 
-    typeWriter(text, msgBox);
-    createHearts();
+    typeWriter(text, msg);
+    hearts();
 }
 
-// ✨ typing effect
+// ⌨️ typing effect
 function typeWriter(text, element) {
     element.innerHTML = "";
     let i = 0;
@@ -102,26 +124,33 @@ function typeWriter(text, element) {
         if (i < text.length) {
             element.innerHTML += text.charAt(i);
             i++;
-            setTimeout(typing, 40);
+            setTimeout(typing, 35);
         }
     }
     typing();
 }
 
 // 💖 floating hearts
-function createHearts() {
-    for (let i = 0; i < 20; i++) {
-        let heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (3 + Math.random() * 3) + "s";
-        document.body.appendChild(heart);
+function hearts() {
+    for (let i = 0; i < 25; i++) {
+        let h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "💖";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.animationDuration = (3 + Math.random() * 3) + "s";
+        document.body.appendChild(h);
 
-        setTimeout(() => {
-            heart.remove();
-        }, 6000);
+        setTimeout(() => h.remove(), 6000);
     }
+}
+
+// 📱 share button
+function share() {
+    let name = document.getElementById("name").value;
+    let text = `💖 I made a love message for ${name}! Try it 💌`;
+
+    let url = "https://wa.me/?text=" + encodeURIComponent(text);
+    window.open(url, "_blank");
 }
 </script>
 
